@@ -4,13 +4,12 @@ PulseEqualizerToggle is a Kodi plugin to toggle between different PulseAudio Equ
 
 2021 wastis
 
-based on the code by Jason Newton <nevion@gmail.com
+based on the code by Jason Newton <nevion@gmail.com>
 https://github.com/pulseaudio/pulseaudio
 
 
 Purpose: toggle between PulseAudio Equalizer profiles
 
-============
 Installation
 ============
 
