@@ -21,6 +21,8 @@
 import xbmcaddon
 import xbmcgui
 import os, sys, dbus
+
+import multiprocessing
  
 addon       = xbmcaddon.Addon()
 addonname   = addon.getAddonInfo('name')
@@ -57,6 +59,10 @@ def connect():
 			  'pactl load-module module-dbus-protocol')
 		sys.exit(-1)
 		
+def loadProfile(sink,profile):
+	sink_filter=Filter(sink)
+	sink_filter.load_profile(profile)
+		
 class Filter():
 	def __init__(self,sink):
 		self.sink_props=dbus.Interface(sink,dbus_interface=prop_iface)
@@ -68,6 +74,7 @@ class Filter():
 		self.sink.SaveState()
 	def load_profile(self,profile):
 		self.sink.LoadProfile(self.channel,dbus.String(profile))
+
 
 #------------------------------------
 #	Setup Connection
@@ -110,8 +117,13 @@ if(len(sinks) > 1):
 selection = dialog.contextmenu(profile_list)
 sink=connection.get_object(object_path=sinks[sink_selection])
 
-sink_filter=Filter(sink)
-sink_filter.load_profile(profile_list[selection])
+p = multiprocessing.Process(target=loadProfile,  args=([sink , profile_list[selection]]))
+p.start()
+
+p.join(4)
+
+
+
 
 
 
